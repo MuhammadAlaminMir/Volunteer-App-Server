@@ -4,10 +4,10 @@ const cors = require('cors');
 const { ObjectId } = require('mongodb');
 require('dotenv').config();
 const MongoClient = require('mongodb').MongoClient;
+const PORT = process.env.PORT || 8080;
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
-
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.tyenc.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
     useNewUrlParser: true,
@@ -61,4 +61,4 @@ client.connect((err) => {
     });
 });
 
-app.listen(process.env.PORT || 5000);
+app.set('port', PORT);
