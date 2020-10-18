@@ -24,7 +24,6 @@ client.connect((err) => {
     });
     app.get('/allVolunteers', (req, res) => {
         volunteerCollection.find({}).toArray((err, documents) => {
-            // console.log(documents);
             res.send(documents);
         });
     });
@@ -34,35 +33,29 @@ client.connect((err) => {
         volunteerCollection
             .insertOne(volunteer)
             .then((result) => {
-                // console.log(result.insertedCount);
-
                 res.send(result.insertedCount > 0);
             })
             .catch((err) => console.log(err));
     });
     app.post('/eventByEmail', (req, res) => {
         const userInput = req.body;
-        // console.log(userInput.email);
-        // console.log(typeof userInput.email);
         if (userInput.email !== undefined) {
             volunteerCollection
                 .find({ email: { $regex: userInput.email } })
                 .toArray((err, documents) => {
-                    // console.log('documents', documents);
                     res.send(documents);
                 });
         }
     });
     app.post('/removeEvent', (req, res) => {
         const eventId = req.body._id;
-        // const id = parseInt(eventId);
+
         const email = req.body.email;
         console.log(eventId, email);
         volunteerCollection.deleteOne({ _id: ObjectId(eventId) });
         volunteerCollection
             .find({ email: { $regex: email } })
             .toArray((err, documents) => {
-                // console.log('documents', documents);
                 res.send(documents);
             });
     });
